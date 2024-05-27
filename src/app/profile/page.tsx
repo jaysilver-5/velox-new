@@ -1,13 +1,11 @@
+'use client'
 import React, {FC} from "react";
 import Header from "@/components/Header";
-import Subnav from "@/components/Subnav";
-import TabBar from "@/components/TabBar";
-import BuyList from "@/components/Buylist";
-import Empty from '@/public/empty_txn.svg';
-import Copy from "@/public/copy.svg"
 import Verified from "@/public/verified.svg"
+import { useRouter } from "next/navigation";
 
 const Earnings:React.FC = () => {
+  const router = useRouter()
   return (
     <main className='w-full min-h-screen bg-[#FFFFFF] flex flex-col items-center'>
         <Header />
@@ -30,7 +28,7 @@ const Earnings:React.FC = () => {
                 </div>
                 </div>
                 <div className="flex place-items-center grid-cols-2 mx-auto gap-4 w-full max-w-[391px] md:max-w-[480px]">
-                <button className="max-w-[100%] w-full border-[#828282] border-[1px] rounded-xl text-black bg-white font-semibold text-base h-[48px] md:text-[22px] md:h-[77px]">
+                <button onClick={() => router.push('/my-profile')} className="max-w-[100%] w-full border-[#828282] border-[1px] rounded-xl text-black bg-white font-semibold text-base h-[48px] md:text-[22px] md:h-[77px]">
                     Edit Profile
                 </button>
                 </div>

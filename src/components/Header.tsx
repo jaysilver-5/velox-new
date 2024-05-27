@@ -103,7 +103,7 @@ const Header = () => {
                 fill="white"
               ></path>
             </svg>
-            <a href="/my-profile">Profile</a>
+            <a href="/profile">Profile</a>
           </li>
           <li className="flex space-x-[16.93px] ml-[33px] font-semibold text-white list-none text-sm lg:block lg:space-x-0 lg:ml-0 lg:mt-0 lg:text-base">
             <svg

@@ -1,9 +1,12 @@
+'use client'
 import React, {FC} from "react";
 import Image from "next/image";
 import Logo from '@/public/black_logo.svg'
 const text = "Can't remember password?"
+import { useRouter } from "next/navigation";
 
 const Signin:React.FC = () => {
+  const router = useRouter()
   return (
     <main className='w-full min-h-screen bg-[#FFFFFF] flex flex-col items-center justify-center'>
         <div className="mx-auto w-[90%] xl:w-full xl:max-w-[500px] max-w-[360px] flex flex-col items-center justify-center xl:gap-y-12 gap-y-8">
