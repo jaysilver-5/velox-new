@@ -13,7 +13,7 @@ const Subnav:React.FC<SubnavProps> = ({onSell, onSwap, onBuy}) => {
   const router = useRouter()
   return (
     <div className="flex flex-row flex-wrap items-center justify-center space-y-6 space-x-0 md:space-y-0 md:space-x-6 lg:justify-between w-[90%] mt-[156px] lg:mt-[180px]">
-        <div>
+        <div className="mx-auto">
             <h2 className="text-[#333333] text-center font-semibold text-2xl md:text-4xl">
                 terzetto <br className="block md:hidden" />
                 <span className="text-[#4F4F4F] text-lg md:text-2xl">What&lsquo;s good?</span>

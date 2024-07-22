@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     await connectDB();
 
-    const { firstName, surname, emailAddress, phoneNumber, clerkId, username, referralId, referred } = req.body;
+    const { firstName, surname, emailAddress, phoneNumber, clerkId, username, referralId, referred, bankname, accountNumber } = req.body;
 
     try {
       const newUser = new User({
@@ -17,6 +17,8 @@ export default async function handler(req, res) {
         username,
         referralId,
         referred,
+        bankname,
+        accountNumber,
       });
 
       const user = await newUser.save();

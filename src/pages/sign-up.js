@@ -48,31 +48,6 @@ const SignUp = () => {
     setReferred(referrerId !== null);
   }, [referrerId]);
 
-  const onSignupSuccess = async () => {
-    try {
-      const response = await fetch('/api/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        router.push('/dashboard');
-        console.log('User created:', data);
-      } else {
-        const errorData = await response.json();
-        setError(errorData.error); // Store the error
-        console.error('Error while posting:', errorData.error);
-      }
-    } catch (error) {
-      setError(error.message); // Store the error
-      console.error('Error:', error);
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setUsername(generateUsername(emailAddress));
@@ -80,49 +55,96 @@ const SignUp = () => {
     if (!isLoaded) return;
 
     try {
-      await signUp.create({
+      // Create the sign-up
+      const signUpResponse = await signUp.create({
         emailAddress,
         password,
       });
 
+      // Prepare email verification
       await signUp.prepareEmailAddressVerification({
         strategy: 'email_code',
       });
 
+      // Store the clerkId from the sign-up response
+      setClerkId(signUpResponse.id);
       setVerifying(true);
     } catch (err) {
-      setError(JSON.stringify(err, null, 2));
-      console.log(error);
+      const errorMessage = err.errors?.[0]?.message || 'An error occurred';
+      setError(errorMessage); // Store the error message
+      console.log(errorMessage);
     }
   };
 
   const handleVerify = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+  
     if (!isLoaded) return;
-
+  
     try {
       const completeSignUp = await signUp.attemptEmailAddressVerification({
         code,
       });
-
+  
       if (completeSignUp.status === 'complete') {
-        setClerkId(completeSignUp.id);
-        console.log('This is the clerkID: ' + clerkId);
-        await onSignupSuccess();
+        // Use the clerkId set during sign-up
+        const signUpClerkId = clerkId || completeSignUp.id;
+
+        // Check if clerkId was generated
+        if (!signUpClerkId) {
+          throw new Error('Sign up failed, please try again.');
+        }
+  
+        console.log('This is the clerkID: ' + signUpClerkId);
+        
+        // Proceed with signup success process
+        await onSignupSuccess(signUpClerkId);
         await setActive({ session: completeSignUp.createdSessionId });
         router.push('/dashboard');
         setVerifying(false);
       } else {
-        setError(JSON.stringify(completeSignUp, null, 2));
-        console.error(JSON.stringify(completeSignUp, null, 2));
+        const errorMessage = completeSignUp.errors?.[0]?.message || 'An error occurred';
+        setError(errorMessage); // Store the error message
+        console.error(errorMessage);
       }
     } catch (err) {
-      setError(JSON.stringify(err, null, 2));
-      console.error('Error:', JSON.stringify(err, null, 2));
+      const errorMessage = err.message || 'An error occurred';
+      setError(errorMessage); // Store the error message
+      console.error('Error:', errorMessage);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const onSignupSuccess = async (signUpClerkId) => {
+    try {
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          clerkId: signUpClerkId, // Use clerkId from sign-up process
+        }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        const errorMessage = errorData.errors?.[0]?.message || 'Unable to create your account, please check your network connection.';
+        setError(errorMessage); // Store the error message
+        console.error('Error while posting:', errorMessage);
+        return;
+      }
+  
+      const data = await response.json();
+      console.log('User created:', data);
+      router.push()
+    } catch (error) {
+      const errorMessage = error.message || 'Unable to create your account, please check your network connection.';
+      setError(errorMessage); // Store the error message
+      console.error('Error:', errorMessage);
     }
   };
 
@@ -195,7 +217,7 @@ const SignUp = () => {
     <main className='w-full min-h-screen bg-[#FFFFFF] flex flex-col items-center justify-center py-6 xl:py-16'>
       <div className="mx-auto w-[90%] xl:w-full xl:max-w-[720px] max-w-[360px] flex flex-col items-center justify-center xl:gap-y-12 gap-y-8">
         <img src={Logo.src} alt='logo' className="xl:w-[112px] xl:h-[36px] w-[75px] h-[24px]" />
-        <div className="flex items-center justify-center flex-col w-full gap-y-1 xl:gap-y-2">
+        <div className="flex flex-col items-center justify-center gap-y-3">
           <h3 className="font-semibold text-[1.75rem] leading-[135%] xl:text-[2.375rem] text-black">Create an account</h3>
           <p className="font-normal text-sm text-black xl:text-base">Already have an account? <span className="text-[#E8730C]"><Link href="/sign-in">Sign in</Link></span></p>
         </div>
@@ -310,6 +332,17 @@ const SignUp = () => {
           </div>
         </form>
       </div>
+      {error && <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg lg:w-[480px] w-[320px] flex flex-col items-center justify-center gap-y-8">
+            <h2 className="text-2xl font-bold">Error</h2>
+            <p className="text-[#ff0000]">{error}</p>
+            <div className="flex items-center justify-center gap-x-4">
+              <button onClick={() => router.push('/sign-in')} className="px-6 rounded-full py-2 border-2 border-black text-[20px] font-medium">Sign In</button>
+              <button onClick={() => setError(null)} className="px-6 rounded-full py-2 text-[20px] font-medium bg-[#E8730C] text-white">Try Again</button>
+            </div>
+          </div>
+        </div>
+      }
     </main>
   );
 };

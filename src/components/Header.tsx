@@ -3,15 +3,21 @@ import { IoMdClose } from "react-icons/io";
 import { HiMenuAlt2 } from "react-icons/hi";
 import Logo from '@/public/white_logo.svg';
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { SignOutButton, SignedIn, SignedOut } from '@clerk/nextjs';
+import { useRouter } from "next/router";
+import { SignOutButton, SignedIn, SignedOut, useClerk } from '@clerk/nextjs';
 
 const Header = () => {
+  const { signOut } = useClerk();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push('/sign-in');
   };
 
   return (
@@ -24,9 +30,9 @@ const Header = () => {
       <div className="lg:mr-[146px]">
         <div className="absolute top-0 bottom-0 z-50 flex items-center justify-end w-full right-4 lg:hidden">
           {sidebarOpen ? (
-            <IoMdClose onClick={toggleSidebar} className="cursor-pointer text-[24px]" />
+            <IoMdClose onClick={toggleSidebar} className="cursor-pointer text-[24px] text-white" />
           ) : (
-            <HiMenuAlt2 onClick={toggleSidebar} className="cursor-pointer text-[24px]" />
+            <HiMenuAlt2 onClick={toggleSidebar} className="cursor-pointer text-[24px] text-white" />
           )}
         </div>
         <div
@@ -108,42 +114,44 @@ const Header = () => {
             <Link href="/profile">Profile</Link>
           </li>
           <SignOutButton>
-            <button className="flex space-x-[16.93px] ml-[33px] font-semibold text-white list-none text-sm lg:block lg:space-x-0 lg:ml-0 lg:mt-0 lg:text-base">
-              <svg
-                className="lg:hidden"
-                width="22"
-                height="23"
-                viewBox="0 0 22 23"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <g clip-path="url(#clip0_2032_3372)">
-                  <path
-                    d="M18.3333 15.1666V12.4166H10.0833V10.5833H18.3333V7.83331L21.9999 11.5L18.3333 15.1666Z"
-                    fill="white"
-                  ></path>
-                  <path
-                    d="M16.5 8.74998V4.16665C16.5 3.15373 15.6796 2.33331 14.6667 2.33331H7.33333C6.32042 2.33331 5.5 3.15373 5.5 4.16665V18.8333C5.5 19.8462 6.32042 20.6666 7.33333 20.6666H14.6667C15.6796 20.6666 16.5 19.8462 16.5 18.8333V14.25H14.6667V18.8333H7.33333V4.16665H14.6667V8.74998H16.5Z"
-                    fill="white"
-                  ></path>
-                  <path
-                    opacity="0.3"
-                    d="M14.6667 19.75H6.41675V3.25H14.6667C15.6797 3.25 16.5001 4.07042 16.5001 5.08333V17.9167C16.5001 18.9296 15.6797 19.75 14.6667 19.75Z"
-                    fill="white"
-                  ></path>
-                </g>
-                <defs>
-                  <clipPath id="clip0_2032_3372">
-                    <rect
-                      width="22"
-                      height="22"
+            <button className="flex gap-x-4">
+              <li className="flex space-x-[16.93px] ml-[33px] font-semibold text-white list-none text-sm lg:block lg:space-x-0 lg:ml-0 lg:mt-0 lg:text-base">
+                <svg
+                  className="lg:hidden"
+                  width="22"
+                  height="23"
+                  viewBox="0 0 22 23"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g clip-path="url(#clip0_2032_3372)">
+                    <path
+                      d="M18.3333 15.1666V12.4166H10.0833V10.5833H18.3333V7.83331L21.9999 11.5L18.3333 15.1666Z"
                       fill="white"
-                      transform="translate(0 0.5)"
-                    ></rect>
-                  </clipPath>
-                </defs>
-              </svg>
-              <p>Sign out</p>
+                    ></path>
+                    <path
+                      d="M16.5 8.74998V4.16665C16.5 3.15373 15.6796 2.33331 14.6667 2.33331H7.33333C6.32042 2.33331 5.5 3.15373 5.5 4.16665V18.8333C5.5 19.8462 6.32042 20.6666 7.33333 20.6666H14.6667C15.6796 20.6666 16.5 19.8462 16.5 18.8333V14.25H14.6667V18.8333H7.33333V4.16665H14.6667V8.74998H16.5Z"
+                      fill="white"
+                    ></path>
+                    <path
+                      opacity="0.3"
+                      d="M14.6667 19.75H6.41675V3.25H14.6667C15.6797 3.25 16.5001 4.07042 16.5001 5.08333V17.9167C16.5001 18.9296 15.6797 19.75 14.6667 19.75Z"
+                      fill="white"
+                    ></path>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_2032_3372">
+                      <rect
+                        width="22"
+                        height="22"
+                        fill="white"
+                        transform="translate(0 0.5)"
+                      ></rect>
+                    </clipPath>
+                  </defs>
+                </svg>
+                <p className="text-[#fff] text-[16px]">Sign out</p>
+              </li>
             </button>
           </SignOutButton>
         </nav>
