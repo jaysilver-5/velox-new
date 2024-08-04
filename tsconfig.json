@@ -18,6 +18,6 @@
       "@/lib/*": ["./lib/*"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/sign-in.js", "src/pages/api/signup.js", "src/components/Subnav.jsx", "src/pages/dashboard.jsx", "src/pages/api/transactions/add.js"],
   "exclude": ["node_modules"]
 }

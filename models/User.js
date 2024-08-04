@@ -1,3 +1,4 @@
+// models/User.js
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
@@ -5,10 +6,10 @@ const UserSchema = new mongoose.Schema({
   surname: { type: String, required: true },
   emailAddress: { type: String, required: true, unique: true },
   phoneNumber: { type: String, required: true },
-  clerkId: { type: String, required: true, unique: true },
+  clerkId: { type: String, required: false, unique: true },
   username: { type: String, required: false, unique: true },
   referred: { type: Boolean, default: false },
-  referralId: {type: String, required: false},
+  referralId: { type: String, required: false },
   bankname: { type: String, required: false },
   accountNumber: { type: String, required: false },
   transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }],

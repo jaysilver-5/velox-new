@@ -1,0 +1,15 @@
+<svg
+                        className="block md:hidden"
+                        width="11"
+                        height="18"
+                        viewBox="0 0 11 18"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+>
+    <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M10.707 16.293L9.29282 17.7072L0.585707 9.00007L9.29282 0.292969L10.707 1.70718L3.41414 9.00007L10.707 16.293Z"
+        fill="white">
+    </path>
+</svg>

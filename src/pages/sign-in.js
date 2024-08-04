@@ -5,6 +5,8 @@ import { useSignIn } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import Link from "next/link";
 import Logo from '@/public/black_logo.svg';
+import { useDispatch } from 'react-redux';
+import { setEmailAddress } from '../features/user/userSlice';
 
 const text = "Can't remember password?";
 
@@ -16,6 +18,7 @@ const Signin = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const router = useRouter();
+  const dispatch = useDispatch(); // Initialize dispatch
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,22 +38,19 @@ const Signin = () => {
 
       if (signInAttempt.status === 'complete') {
         await setActive({ session: signInAttempt.createdSessionId });
+        dispatch(setEmailAddress(email)); // Dispatch the email address to Redux store
         router.push('/dashboard'); // Redirect to '/dashboard'
       } else {
-        if (signInAttempt.errors && signInAttempt.errors.length > 0) {
+        if (signInAttempt.errors?.length > 0) {
           const message = signInAttempt.errors[0].message;
           setErrorMessage(message);
           console.error(message);
         }
       }
     } catch (err) {
-      if (err.errors && err.errors.length > 0) {
-        const message = err.errors[0].message;
-        setErrorMessage(message);
-        console.error(message);
-      } else {
-        console.error('An unknown error occurred.');
-      }
+      const message = err.errors?.[0]?.message || 'An unknown error occurred.';
+      setErrorMessage(message);
+      console.error(message);
     } finally {
       setLoading(false); // Stop loading state
     }

@@ -1,18 +1,18 @@
 // pages/api/getUser.js
-import connectDB from '../../../lib/dbConnect';
-import User from '../../../models/User';
+import connectDB from '../../../../lib/dbConnect';
+import User from '../../../../models/User';
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
-    const { clerkId } = req.query;
+    const { emailAddress } = req.query;
 
-    if (!clerkId) {
-      return res.status(400).json({ error: 'Clerk ID is required' });
+    if (!emailAddress) {
+      return res.status(400).json({ error: 'Email Address is required' });
     }
 
     try {
       await connectDB();
-      const user = await User.findOne({ clerkId });
+      const user = await User.findOne({ emailAddress });
 
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
