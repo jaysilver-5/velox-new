@@ -38,6 +38,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             const emailAddress = user.emailAddress; // Replace with dynamic value if needed
+            console.log(emailAddress)
             try {
                 const response = await fetch(`/api/user/getUser?emailAddress=${encodeURIComponent(emailAddress)}`);
                 const data = await response.json();

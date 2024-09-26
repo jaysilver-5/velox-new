@@ -23,7 +23,27 @@ export default async function handler(req, res) {
 
         console.log('User found:', user);
 
-        const transaction = new Transaction(transactionData);
+        // Handle the proof field if it exists
+        if (transactionData.proof) {
+          const { data, contentType } = transactionData.proof;
+
+          transactionData.proof = {
+            data: Buffer.isBuffer(data) ? data : Buffer.from(data, 'base64'),
+            contentType,
+          };
+        }
+
+        // Ensure `amount` is replaced with `amount_dollar` and `amount_naira`
+        const { amount_dollar, amount_naira } = transactionData;
+        if (amount_dollar === undefined || amount_naira === undefined) {
+          throw new Error('Both amount_dollar and amount_naira must be provided.');
+        }
+
+        const transaction = new Transaction({
+          ...transactionData,
+          amount_dollar,
+          amount_naira,
+        });
         await transaction.save();
 
         console.log('Transaction saved:', transaction);
