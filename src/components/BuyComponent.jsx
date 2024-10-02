@@ -90,8 +90,8 @@ const BuyComponent = () => {
     );
   };
 
-  const handleFinalTransfer = async () => {
-    if (!network || !accountNumber || !selectedImage || !coinType) {
+    const handleFinalTransfer = async () => {
+    if (!selectedImage) {
       alert("Please complete all fields.");
       return;
     }
@@ -104,14 +104,14 @@ const BuyComponent = () => {
         transactionId: generateTransactionId(), // Generate a random transaction ID
         amount_dollar: dollar,
         amount_naira: ngn,
-        type: "buy",
+        type: "sell",
         status: "pending",
         coin_name: coinType,
         rate: rate,
         bankname: bankname,
-        accountNumber: adminAccount,
+        accountNumber: accountNumber,
         network: network,
-        walletAddress: address,
+        walletAddress: paymentAddress,
         transaction_proof: selectedImage // This is the Base64 image string
       }
     };
@@ -125,7 +125,7 @@ const BuyComponent = () => {
     } catch (error) {
       console.error(error);
       alert("Transaction failed!");
-      setLoading(true)
+      setLoading(false)
     }
   };
 
