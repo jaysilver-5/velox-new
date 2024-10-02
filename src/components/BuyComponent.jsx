@@ -16,6 +16,7 @@ import { FaCopy } from "react-icons/fa6";
 import SuccessModal from "./ui/SuccessModal";
 import imageCompression from 'browser-image-compression';
 import LoadingModal from "./ui/LoadingModal";
+import axios from 'axios';
 
 const BuyComponent = () => {
   const router = useRouter();
