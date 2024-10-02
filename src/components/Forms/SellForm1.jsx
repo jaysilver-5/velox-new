@@ -112,8 +112,8 @@ const SellForm1 = () => {
         status: "pending",
         coin_name: coinType,
         rate: rate,
-        bankname: adminBankname,
-        accountNumber: adminAccount,
+        bankname: bankname,
+        accountNumber: accountNumber,
         network: network,
         walletAddress: paymentAddress,
         transaction_proof: selectedImage // Should be a string
