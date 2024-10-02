@@ -1,5 +1,5 @@
 'use client'
-import React, {FC} from "react";
+import React, {useEffect} from "react";
 import Header from "@/components/Header";
 import TradeNav from "@/components/TradeNav";
 import BuyComponent from "@/components/BuyComponent";
@@ -14,6 +14,11 @@ const Trade = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const mode = searchParams.get('mode');
+
+  useEffect(() => {
+    router.push('/trade?mode=sell')
+  }, [router])
+
   return (
     <div>
         {mode == 'sell' && <SellComponent />}

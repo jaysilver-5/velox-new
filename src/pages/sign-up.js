@@ -4,6 +4,7 @@ import Logo from '@/public/black_logo.svg';
 import { useSignUp } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import Link from "next/link";
+import LoadingModal from "../components/ui/LoadingModal";
 import { useSelector, useDispatch } from 'react-redux';
 import {
   setFirstName,
@@ -313,9 +314,7 @@ const SignUp = () => {
               <h1>Loading</h1>
             </section>}
 
-            {loading && <section className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 w-full top-0 h-screen z-100 bg-[#fff8]">
-              <h1>Loading</h1>
-            </section>}
+            {loading && <LoadingModal />}
 
             {!verifying && !isLoaded && <section className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 w-full top-0 h-screen z-100 bg-[#fff8]">
               <h1>Loading</h1>

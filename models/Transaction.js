@@ -2,23 +2,21 @@
 import mongoose from 'mongoose';
 
 const TransactionSchema = new mongoose.Schema({
-  transactionId: { type: String, required: true, unique: true },
-  amount_dollar: { type: Number, required: true },
-  amount_naira: { type: Number, required: true },
-  type: { type: String, required: true },
-  status: { type: String, required: true },
-  timestamp: { type: Date, default: Date.now },
-  coin_name: { type: String, required: true },
-  rate: { type: Number, required: true },
+  transactionId: { type: String, required: true, unique: true }, // Unique transaction ID
+  amount_dollar: { type: Number, required: true },               // Amount in dollars
+  amount_naira: { type: Number, required: true },                // Amount in naira
+  type: { type: String, required: true },                        // Transaction type (e.g., buy, sell)
+  status: { type: String, required: true },                      // Status of transaction (e.g., pending, completed)
+  timestamp: { type: Date, default: Date.now },                  // Timestamp of the transaction
+  coin_name: { type: String, required: true },                   // Name of the coin being traded
+  rate: { type: Number, required: true },                        // Exchange rate of the coin
   bankname: { type: String, required: false },
-  accountNumber: { type: String, required: false },
-  note: { type: String, required: false },
-  network: { type: String, required: true },
-  walletAddress: { type: String, required: false },
-  proof: {
-    type: Buffer, // Stores binary data, suitable for images or PDFs
-    contentType: { type: String, required: false }, // Specifies the MIME type (e.g., 'image/png', 'application/pdf')
-  },
+  transaction_proof: { type: String, required: false },                      // Bank name (for certain transaction types)
+  accountNumber: { type: String, required: false },              // Account number (optional)
+  // note: { type: String, required: false },                       // Optional note
+  network: { type: String, required: true },                     // Blockchain network (e.g., Ethereum, Bitcoin)
+  walletAddress: { type: String, required: false },              // Wallet address (optional)
+  // proof: { type: String, required: false },                      // Proof (e.g., URL, transaction hash)
 });
 
 export default mongoose.models.Transaction || mongoose.model('Transaction', TransactionSchema);
