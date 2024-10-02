@@ -7,7 +7,7 @@ const TransactionList = ({ dollar, naira, status, time, type, coinName, network 
   return (
     <div className="h-[72px] flex cursor-pointer flex-row justify-between items-center md:h-[97px]">
       <div>
-        <h3 className="text-[#333333] font-semibold text-sm md:text-lg">{type == 'buy' ? <p>Bought</p> : <p>Sold</p>} {dollar}</h3>
+        <h3 className="text-[#333333] font-semibold text-sm md:text-lg">{type == 'buy' ? 'Bought' : 'Sold'} {dollar}</h3>
         <h5 className="text-[#828282] font-normal text-xs md:text-base">
           {coinName} {network} <span className={statusColor}>. {status}</span>
         </h5>
