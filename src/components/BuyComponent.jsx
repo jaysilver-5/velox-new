@@ -116,7 +116,7 @@ const BuyComponent = () => {
     };
 
     try {
-      const response = await axios.post("http://localhost:3000/api/transactions/add", postData);
+      const response = await axios.post("/api/transactions/add", postData);
       console.log(response.data);
       setLoading(false)
       // alert("Transaction successful!");

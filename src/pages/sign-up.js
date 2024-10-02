@@ -316,9 +316,7 @@ const SignUp = () => {
 
             {loading && <LoadingModal />}
 
-            {!verifying && !isLoaded && <section className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 w-full top-0 h-screen z-100 bg-[#fff8]">
-              <h1>Loading</h1>
-            </section>}
+            {!verifying && !isLoaded && <LoadingModal />}
           <button type="submit" className="mx-auto mt-4 xl:mt-6 h-[55px] xl:h-[77px] bg-[#E8730C] hover:bg-[#E8730C] rounded-xl text-white font-medium text-base leading-9 w-[80%] md:rounded-2xl md:text-2xl" disabled={!isFormValid()}>
             {loading ? 'Loading...' : 'Sign Up'}
           </button>
