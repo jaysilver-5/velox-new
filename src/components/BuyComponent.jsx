@@ -104,7 +104,7 @@ const BuyComponent = () => {
         transactionId: generateTransactionId(), // Generate a random transaction ID
         amount_dollar: dollar,
         amount_naira: ngn,
-        type: "sell",
+        type: "buy",
         status: "pending",
         coin_name: coinType,
         rate: rate,
