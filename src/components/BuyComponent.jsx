@@ -337,7 +337,6 @@ const BuyComponent = () => {
 
               <button
                 onClick={handleFinalTransfer}
-                type="submit"
                 // className="bg-[#E0E0E0] disabled:bg-[#E0E0E0] hover:bg-[#E8730C] rounded-xl text-white font-semibold text-sm leading-9 h-full w-full md:rounded-2xl md:text-base"
                 className={`bg-[#E8730C] h-20 ${!network ? 'cursor-not-allowed' : 'hover:bg-[#E8730C]'} rounded-xl text-white font-semibold text-sm leading-9 w-full md:rounded-2xl md:text-base mb-8`}
               >
