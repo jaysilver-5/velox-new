@@ -14,6 +14,7 @@ import AmountInput from "@/components/AmountInput";
 import SellingRate from "@/components/SellingRate";
 import { FaCopy } from "react-icons/fa6";
 import SuccessModal from "./ui/SuccessModal";
+import imageCompression from 'browser-image-compression';
 import LoadingModal from "./ui/LoadingModal";
 
 const BuyComponent = () => {
