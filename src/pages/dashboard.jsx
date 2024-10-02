@@ -106,7 +106,7 @@ const Dashboard = () => {
       ));
     } else if (tab === 'Sell') {
       return transactions.filter(txn => txn.type === 'sell').map((item, index) => (
-        <SellList key={index} {...item} />
+        <TransactionList key={index} {...item} />
       ));
     } else if (tab === 'Swap') {
       return <SwapComponent />;
