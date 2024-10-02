@@ -108,7 +108,7 @@ const SellForm1 = () => {
         transactionId: generateTransactionId(),
         amount_dollar: dollar,
         amount_naira: ngn,
-        type: "buy",
+        type: "sell",
         status: "pending",
         coin_name: coinType,
         rate: rate,
