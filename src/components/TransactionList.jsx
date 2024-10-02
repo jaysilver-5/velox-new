@@ -14,7 +14,7 @@ const TransactionList = ({ dollar, naira, status, time, type, coinName, network 
       </div>
       <div>
         <h3 className="text-[#333333] font-semibold text-right text-lg md:text-xl">{naira}</h3>
-        <h5 className="text-[#828282] font-normal text-right text-xs md:text-base">{time}</h5>
+        <h5 className="text-[#828282] font-normal text-right text-xs md:text-base">a while ago</h5>
       </div>
     </div>
   );

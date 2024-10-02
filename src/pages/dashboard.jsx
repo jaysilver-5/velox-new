@@ -118,18 +118,18 @@ const Dashboard = () => {
   }, [tab, transactions]);
 
   return (
-    <main className='w-full min-h-screen bg-[#FFFFFF] flex flex-col items-center'>
+    <main className='w-full min-h-screen bg-[#FFFFFF] flex flex-col items-center overflow-hidden'>
       <Header />
       <Subnav
         onSell={() => setTab('Sell')}
         onBuy={() => setTab('Buy')}
         onSwap={() => setTab('Swap')}
       />
-      <div className="w-[90%] mb-6 mt-[45px] md:mt-[61px]">
+      <div className="w-[90%] mb-6 mt-[45px] md:mt-[61px] overflow-hiddens">
         <h2 className="text-[#4F4F4F] text-lg font-semibold md:text-[22px]">Transaction History</h2>
       </div>
       <TabBar onAll={() => setTab('All')} onBuy={() => setTab('Buy')} onSell={() => setTab('Sell')} onSwap={() => setTab('Swap')} />
-      <div className="w-[90%] overflow-y-scroll">
+      <div className="w-[90%] overflow-y-scroll h-[20%]">
         {transactions.length ? renderTabContent : (
           <div className="w-full flex justify-center items-center mt-24">
             <img src={Empty.src} alt="No transactions" />

@@ -92,43 +92,46 @@ const SellForm1 = () => {
   };
 
   const handleFinalTransfer = async () => {
-    if (!network || !accountNumber || !selectedImage || !coinType) {
+    if (!selectedImage) {
       alert("Please complete all fields.");
       return;
     }
-
+ 
     setLoading(true)
-
+ 
+    // Ensure selectedImage is only the Base64 string
+    console.log(selectedImage); // Check the value in console before sending
+ 
     const postData = {
       emailAddress,
       transactionData: {
-        transactionId: generateTransactionId(), // Generate a random transaction ID
+        transactionId: generateTransactionId(),
         amount_dollar: dollar,
         amount_naira: ngn,
-        type: "sell",
+        type: "buy",
         status: "pending",
         coin_name: coinType,
         rate: rate,
-        bankname: bankname,
-        accountNumber: accountNumber,
+        bankname: adminBankname,
+        accountNumber: adminAccount,
         network: network,
         walletAddress: paymentAddress,
-        transaction_proof: selectedImage // This is the Base64 image string
+        transaction_proof: selectedImage // Should be a string
       }
     };
-
+ 
     try {
       const response = await axios.post("/api/transactions/add", postData);
       console.log(response.data);
       setLoading(false)
-      // alert("Transaction successful!");
-      setSuccess('true')
+      setSuccess('true');
     } catch (error) {
       console.error(error);
       alert("Transaction failed!");
-      setLoading(false)
+      setLoading(false);
     }
   };
+ 
 
   useEffect(() => {
     const convertedAmount =

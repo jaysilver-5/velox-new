@@ -15,9 +15,9 @@ const Trade = () => {
   const searchParams = useSearchParams();
   const mode = searchParams.get('mode');
 
-  useEffect(() => {
-    router.push('/trade?mode=sell')
-  }, [router])
+  // useEffect(() => {
+  //   router.push('/trade?mode=sell')
+  // }, [router])
 
   return (
     <div>

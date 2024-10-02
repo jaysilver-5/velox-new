@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import toggle from '@/public/togle-swap.svg'
+import toggle from '@/public/togle-swap.svg';
+import { useSelector } from "react-redux";
 import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import backArrow from '@/public/back_arrow.svg';
@@ -38,6 +39,8 @@ const BuyComponent = () => {
   const [adminAccount, setAdminAccount] = useState('89038279489');
   const [isAgreed, setIsAgreed] = useState(false);
   const [success, setSuccess] = useState('');
+  const emailAddress = useSelector((state) => state.user.emailAddress);
+  const [paymentAddress, setPaymentAddress] = useState('');  // Define paymentAddress here
 
   const generateTransactionId = () => {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -51,29 +54,27 @@ const BuyComponent = () => {
   // Function to handle the image input and display it
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    setLoading(true)
+    setLoading(true);
 
     if (file) {
-      // Set options for image compression
       const options = {
-        maxSizeMB: 1,          // Max file size in MB
-        maxWidthOrHeight: 800,  // Max width/height
-        useWebWorker: true,     // Use multi-threading to compress faster
+        maxSizeMB: 1,
+        maxWidthOrHeight: 800,
+        useWebWorker: true,
       };
 
       try {
-        // Compress the image
         const compressedFile = await imageCompression(file, options);
         const reader = new FileReader();
 
         reader.onloadend = () => {
-          setSelectedImage(reader.result); // Set the Base64 encoded image
+          setSelectedImage(reader.result);
         };
-        setLoading(false)
-        reader.readAsDataURL(compressedFile); // Convert compressed image to Base64
+        setLoading(false);
+        reader.readAsDataURL(compressedFile);
       } catch (error) {
         alert("Image compression error:", error);
-        setLoading(false)
+        setLoading(false);
       }
     }
   };
@@ -83,7 +84,7 @@ const BuyComponent = () => {
     navigator.clipboard.writeText(paymentAddress).then(
       () => {
         setCopySuccess('Copied!');
-        setTimeout(() => setCopySuccess(''), 2000); // Clear after 2 seconds
+        setTimeout(() => setCopySuccess(''), 2000);
       },
       () => {
         setCopySuccess('Failed to copy!');
@@ -91,42 +92,41 @@ const BuyComponent = () => {
     );
   };
 
-    const handleFinalTransfer = async () => {
-    if (!selectedImage) {
+  const handleFinalTransfer = async () => {
+    if (!selectedImage || !paymentAddress) {
       alert("Please complete all fields.");
       return;
     }
 
-    setLoading(true)
+    setLoading(true);
 
     const postData = {
       emailAddress,
       transactionData: {
-        transactionId: generateTransactionId(), // Generate a random transaction ID
+        transactionId: generateTransactionId(),
         amount_dollar: dollar,
         amount_naira: ngn,
         type: "buy",
         status: "pending",
         coin_name: coinType,
         rate: rate,
-        bankname: bankname,
-        accountNumber: accountNumber,
+        bankname: adminBankname,
+        accountNumber: adminAccount,
         network: network,
-        walletAddress: paymentAddress,
-        transaction_proof: selectedImage // This is the Base64 image string
+        walletAddress: paymentAddress,  // Now this is correctly defined
+        transaction_proof: selectedImage
       }
     };
 
     try {
       const response = await axios.post("/api/transactions/add", postData);
       console.log(response.data);
-      setLoading(false)
-      // alert("Transaction successful!");
-      setSuccess('true')
+      setLoading(false);
+      setSuccess('true');
     } catch (error) {
       console.error(error);
       alert("Transaction failed!");
-      setLoading(false)
+      setLoading(false);
     }
   };
 
@@ -145,7 +145,7 @@ const BuyComponent = () => {
     }
 
     if (step === 0) {
-      router.push('/dashboard');  // Redirect to dashboard when step is 0
+      router.push('/dashboard');
     }
 
     setConvertedCurrency(convertedAmount);
@@ -166,16 +166,16 @@ const BuyComponent = () => {
     setLoading(true);
     setAmountError('');
 
-    // Simulate async task
     setTimeout(() => {
       setLoading(false);
-      setStep(2); // Move to the next step (Show SellForm2)
-    }, 500); // Simulate a delay
+      setStep(2);
+    }, 500);
   };
 
   const handleProceedStep2 = () => {
     if (address && network) {
       setStep(3);
+      setPaymentAddress(address);  // Set paymentAddress from address input
     }
   };
 
@@ -337,13 +337,16 @@ const BuyComponent = () => {
               )}
 
               <button
-                onClick={handleFinalTransfer}
-                // className="bg-[#E0E0E0] disabled:bg-[#E0E0E0] hover:bg-[#E8730C] rounded-xl text-white font-semibold text-sm leading-9 h-full w-full md:rounded-2xl md:text-base"
-                className={`bg-[#E8730C] h-20 ${!network ? 'cursor-not-allowed' : 'hover:bg-[#E8730C]'} rounded-xl text-white font-semibold text-sm leading-9 w-full md:rounded-2xl md:text-base mb-8`}
-              >
-                I Have Transferred the Crypto
-              </button>
+                  type="button"
+                  onClick={handleFinalTransfer} // Call the API when user clicks
+                  className={`bg-[#E8730C] h-16 ${!network ? 'cursor-not-allowed' : 'hover:bg-[#E8730C]'} rounded-xl text-white font-semibold text-sm leading-9 w-full md:rounded-2xl md:text-base mb-8`}
+                >
+                  I Have Transferred the Crypto
+                </button>
             </form>
+
+              
+            
           </div>
         )}
 
